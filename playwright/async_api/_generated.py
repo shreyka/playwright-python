@@ -11497,6 +11497,10 @@ class Page(AsyncContextManager):
 
         return mapping.from_maybe_impl(await self._impl_obj.pause())
 
+    async def resume(self) -> None:
+
+        return mapping.from_maybe_impl(await self._impl_obj.resume())
+
     async def pdf(
         self,
         *,

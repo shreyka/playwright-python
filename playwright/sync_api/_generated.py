@@ -11585,6 +11585,10 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(self._sync(self._impl_obj.pause()))
 
+    def resume(self) -> None:
+
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.resume()))
+
     def pdf(
         self,
         *,

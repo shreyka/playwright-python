@@ -99,19 +99,19 @@ def extractall(zip: zipfile.ZipFile, path: str) -> None:
 
 def download_driver(zip_name: str) -> None:
     zip_file = f"playwright-{driver_version}-{zip_name}.zip"
-    if os.path.exists("driver/" + zip_file):
+    destination_path = "driver/" + zip_file
+    if os.path.exists(destination_path) and os.path.getsize(destination_path) > 0:
         return
-    url = "https://playwright.azureedge.net/builds/driver/"
-    if (
-        "-alpha" in driver_version
-        or "-beta" in driver_version
-        or "-next" in driver_version
-    ):
-        url = url + "next/"
-    url = url + zip_file
+    # Use custom GitHub releases URL instead of Microsoft URL
+    url = f"https://github.com/shreyka/simplex-playwright-builds/releases/download/v{driver_version}/{zip_file}"
+    temp_destination_path = destination_path + ".tmp"
     print(f"Fetching {url}")
     # Don't replace this with urllib - Python won't have certificates to do SSL on all platforms.
-    subprocess.check_call(["curl", url, "-o", "driver/" + zip_file])
+    subprocess.check_call(["curl", "-L", url, "-o", temp_destination_path])
+    if os.path.exists(temp_destination_path) and os.path.getsize(temp_destination_path) > 0:
+        os.rename(temp_destination_path, destination_path)
+    else:
+        raise RuntimeError(f"Failed to download {url}")
 
 
 class PlaywrightBDistWheelCommand(BDistWheelCommand):

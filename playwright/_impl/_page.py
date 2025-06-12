@@ -1096,6 +1096,7 @@ class Page(ChannelOwner):
         return self.context.request
 
     async def pause(self) -> None:
+        print("PAUSE!!!")
         default_navigation_timeout = (
             self._browser_context._timeout_settings.default_navigation_timeout()
         )
@@ -1106,6 +1107,28 @@ class Page(ChannelOwner):
             await asyncio.wait(
                 [
                     asyncio.create_task(self._browser_context._channel.send("pause")),
+                    self._closed_or_crashed_future,
+                ],
+                return_when=asyncio.FIRST_COMPLETED,
+            )
+        finally:
+            self._browser_context._set_default_navigation_timeout_impl(
+                default_navigation_timeout
+            )
+            self._browser_context._set_default_timeout_impl(default_timeout)
+    
+    async def resume(self) -> None:
+        print("RESUME!!!")
+        default_navigation_timeout = (
+            self._browser_context._timeout_settings.default_navigation_timeout()
+        )
+        default_timeout = self._browser_context._timeout_settings.default_timeout()
+        self._browser_context.set_default_navigation_timeout(0)
+        self._browser_context.set_default_timeout(0)
+        try:
+            await asyncio.wait(
+                [
+                    asyncio.create_task(self._browser_context._channel.send("simplex_resume")),
                     self._closed_or_crashed_future,
                 ],
                 return_when=asyncio.FIRST_COMPLETED,

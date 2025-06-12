@@ -1,0 +1,135 @@
+name: Build and Release Wheels
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.52.0
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          # Linux builds
+          - os: ubuntu-latest
+            wheel: manylinux1_x86_64.whl
+            platform: linux
+          - os: ubuntu-latest
+            wheel: manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+            platform: linux
+          
+          # macOS builds
+          - os: macos-latest
+            wheel: macosx_11_0_arm64.whl
+            platform: macos
+          - os: macos-latest
+            wheel: macosx_11_0_universal2.whl
+            platform: macos
+          
+          # Windows builds
+          - os: windows-latest
+            wheel: win_amd64.whl
+            platform: windows
+          - os: windows-latest
+            wheel: win32.whl
+            platform: windows
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel setuptools
+        pip install -r requirements.txt
+    
+    - name: Clear environment variables
+      shell: bash
+      run: |
+        echo "Clearing Playwright environment variables"
+        unset PLAYWRIGHT_DRIVER_PATH || true
+        unset PLAYWRIGHT_BROWSERS_PATH || true
+        unset PLAYWRIGHT_NODEJS_PATH || true
+    
+    - name: Clean build artifacts
+      shell: bash
+      run: |
+        rm -rf build/ dist/ playwright.egg-info/ driver/ playwright/driver/ .eggs/
+        find . -name "*.pyc" -delete || true
+        find . -name "__pycache__" -delete -type d || true
+    
+    - name: Build wheel for ${{ matrix.wheel }}
+      shell: bash
+      run: |
+        export PLAYWRIGHT_TARGET_WHEEL=${{ matrix.wheel }}
+        python -m build --wheel
+        
+    - name: List built wheels
+      shell: bash
+      run: ls -la dist/
+    
+    - name: Upload wheel artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheel-${{ matrix.wheel }}
+        path: dist/*.whl
+        retention-days: 30
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Download all wheel artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: wheel-*
+        path: wheels/
+        merge-multiple: true
+    
+    - name: List all wheels
+      run: |
+        echo "All built wheels:"
+        find wheels/ -name "*.whl" | sort
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: wheels/*.whl
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        body: |
+          ## Playwright Python Custom Build
+          
+          This release contains custom playwright-python wheels with your custom driver.
+          
+          ### Installation
+          
+          **Linux (Modal, servers):**
+          ```bash
+          pip install https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/playwright-*-manylinux1_x86_64.whl
+          playwright install chromium
+          ```
+          
+          **macOS ARM64:**
+          ```bash
+          pip install https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/playwright-*-macosx_11_0_arm64.whl
+          playwright install chromium
+          ```
+          
+          **Windows:**
+          ```bash
+          pip install https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/playwright-*-win_amd64.whl
+          playwright install chromium
+          ```
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

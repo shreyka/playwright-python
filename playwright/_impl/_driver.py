@@ -23,7 +23,20 @@ from playwright._repo_version import version
 
 
 def compute_driver_executable() -> Tuple[str, str]:
-    driver_path = Path(inspect.getfile(playwright)).parent / "driver"
+    # First try to get driver path from environment variable
+    custom_driver_path = os.getenv("PLAYWRIGHT_DRIVER_PATH")
+    if custom_driver_path:
+        driver_path = Path(custom_driver_path)
+    else:
+        # Try to compute from module location, with fallback
+        try:
+            driver_path = Path(inspect.getfile(playwright)).parent / "driver"
+        except TypeError:
+            # Handle case where playwright is treated as built-in module
+            # Use the installed package location
+            import playwright as pw_module
+            driver_path = Path(pw_module.__file__).parent / "driver"
+    
     cli_path = str(driver_path / "package" / "cli.js")
     if sys.platform == "win32":
         return (
