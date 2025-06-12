@@ -1096,6 +1096,7 @@ class Page(ChannelOwner):
         return self.context.request
 
     async def pause(self) -> None:
+        print("SIMPLEX PAUSE IT!")
         default_navigation_timeout = (
             self._browser_context._timeout_settings.default_navigation_timeout()
         )
