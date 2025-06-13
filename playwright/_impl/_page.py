@@ -1095,7 +1095,23 @@ class Page(ChannelOwner):
     def request(self) -> "APIRequestContext":
         return self.context.request
 
-    async def pause(self) -> None:
+    async def pause(self, *, output: Optional[str] = None) -> None:
+        """Page.pause
+
+        Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume'
+        button in the page overlay or to call `playwright.resume()` in the DevTools console.
+
+        User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from
+        the place it was paused.
+
+        **NOTE** This method requires Playwright to be started in a headed mode, with a falsy
+        [`headless`](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-option-headless) option.
+
+        Parameters
+        ----------
+        output_file : Union[pathlib.Path, str, None]
+            Saves the generated script to a file.
+        """
         default_navigation_timeout = (
             self._browser_context._timeout_settings.default_navigation_timeout()
         )
@@ -1103,9 +1119,14 @@ class Page(ChannelOwner):
         self._browser_context.set_default_navigation_timeout(0)
         self._browser_context.set_default_timeout(0)
         try:
+            # Build params dict - only include outputFile if provided
+            params = {}
+            if output is not None:
+                params["outputFile"] = str(output)
+            
             await asyncio.wait(
                 [
-                    asyncio.create_task(self._browser_context._channel.send("pause")),
+                    asyncio.create_task(self._browser_context._channel.send("pause", params)),
                     self._closed_or_crashed_future,
                 ],
                 return_when=asyncio.FIRST_COMPLETED,

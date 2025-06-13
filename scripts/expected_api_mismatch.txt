@@ -21,5 +21,9 @@ Parameter type mismatch in Page.route_web_socket(handler=): documented as Callab
 Parameter type mismatch in WebSocketRoute.on_close(handler=): documented as Callable[[Union[int, undefined]], Union[Any, Any]], code has Callable[[Union[int, None], Union[str, None]], Any]
 Parameter type mismatch in WebSocketRoute.on_message(handler=): documented as Callable[[str], Union[Any, Any]], code has Callable[[Union[bytes, str]], Any]
 
+
 # Custom resume method not in official API documentation
 Method not documented: Page.resume
+
+# Custom pause parameter not in official API documentation
+Parameter not documented: Page.pause(output=)
