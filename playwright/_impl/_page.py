@@ -646,6 +646,7 @@ class Page(ChannelOwner):
     async def add_init_script(
         self, script: str = None, path: Union[str, Path] = None
     ) -> None:
+        print("CALLING FIXED ADD INIT SCRIPT")
         if path:
             script = add_source_url_to_script(
                 (await async_readfile(path)).decode(), path
@@ -1112,6 +1113,7 @@ class Page(ChannelOwner):
         output_file : Union[pathlib.Path, str, None]
             Saves the generated script to a file.
         """
+        print("CALLING PAUSE")
         default_navigation_timeout = (
             self._browser_context._timeout_settings.default_navigation_timeout()
         )
