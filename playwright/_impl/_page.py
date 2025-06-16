@@ -1140,6 +1140,7 @@ class Page(ChannelOwner):
             self._browser_context._set_default_timeout_impl(default_timeout)
     
     async def resume(self) -> None:
+        print("CALLING NEW RESUME")
         await self._browser_context._channel.send("resume")
 
     async def pdf(
