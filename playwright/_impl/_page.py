@@ -1113,7 +1113,7 @@ class Page(ChannelOwner):
         output_file : Union[pathlib.Path, str, None]
             Saves the generated script to a file.
         """
-        print("CALLING PAUSE")
+        print("CALLING NEW PAUSE")
         default_navigation_timeout = (
             self._browser_context._timeout_settings.default_navigation_timeout()
         )

@@ -100,10 +100,12 @@ def extractall(zip: zipfile.ZipFile, path: str) -> None:
 def download_driver(zip_name: str) -> None:
     zip_file = f"playwright-{driver_version}-{zip_name}.zip"
     destination_path = "driver/" + zip_file
-    if os.path.exists(destination_path) and os.path.getsize(destination_path) > 0:
-        return
+    # if os.path.exists(destination_path) and os.path.getsize(destination_path) > 0:
+    #     return
     # Use custom GitHub releases URL instead of Microsoft URL
+
     url = f"https://github.com/shreyka/simplex-playwright-builds/releases/download/v{driver_version}/{zip_file}"
+    print("DOWNLOADING FROM SHREYA'S: ", url)
     temp_destination_path = destination_path + ".tmp"
     print(f"Fetching {url}")
     # Don't replace this with urllib - Python won't have certificates to do SSL on all platforms.
