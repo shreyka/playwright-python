@@ -21,6 +21,7 @@ import sys
 import zipfile
 from typing import Dict
 
+release_version = "1.52.1"  ## shreya's github release version
 driver_version = "1.52.0"
 
 base_wheel_bundles = [
@@ -98,13 +99,36 @@ def extractall(zip: zipfile.ZipFile, path: str) -> None:
 
 
 def download_driver(zip_name: str) -> None:
+    # local_driver_base = os.getenv("PLAYWRIGHT_LOCAL_DRIVER_PATH")
+    
+    # # Map zip_name to the actual zip file name in the local build
+    # # The local builds use version 1.54.0-next, but we can map them to our zip_names
+    # zip_to_file_mapping = {
+    #     "mac-arm64": "playwright-1.52.0-mac-arm64.zip",
+    #     "mac": "playwright-1.52.0-mac.zip", 
+    #     "linux": "playwright-1.52.0-linux.zip",
+    #     "linux-arm64": "playwright-1.52.0-linux-arm64.zip",
+    #     "win32_x64": "playwright-1.52.0-win32_x64.zip",
+    #     "win32_arm64": "playwright-1.52.0-next-win32_arm64.zip"
+    # }
+    
+    # local_zip_file = os.path.join(local_driver_base, zip_to_file_mapping.get(zip_name))
+    
+    # if local_zip_file and os.path.exists(local_zip_file):
+    #     print(f"Using local driver zip: {local_zip_file}")
+    #     # Copy the local zip to the expected location
+    #     destination_path = f"driver/playwright-{driver_version}-{zip_name}.zip"
+    #     shutil.copy2(local_zip_file, destination_path)
+    #     return
+    
+    # Fallback to downloading if local zip not found
     zip_file = f"playwright-{driver_version}-{zip_name}.zip"
     destination_path = "driver/" + zip_file
     # if os.path.exists(destination_path) and os.path.getsize(destination_path) > 0:
     #     return
     # Use custom GitHub releases URL instead of Microsoft URL
 
-    url = f"https://github.com/shreyka/simplex-playwright-builds/releases/download/v{driver_version}/{zip_file}"
+    url = f"https://github.com/shreyka/simplex-playwright-builds/releases/download/v{release_version}/{zip_file}"
     print("DOWNLOADING FROM SHREYA'S: ", url)
     temp_destination_path = destination_path + ".tmp"
     print(f"Fetching {url}")

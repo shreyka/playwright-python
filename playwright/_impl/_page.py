@@ -1121,14 +1121,17 @@ class Page(ChannelOwner):
         self._browser_context.set_default_navigation_timeout(0)
         self._browser_context.set_default_timeout(0)
         try:
-            # Build params dict - only include outputFile if provided
-            params = {}
-            if output is not None:
-                params["outputFile"] = str(output)
-            
+            print("CALLING NEW PAUSE 2")
             await asyncio.wait(
                 [
-                    asyncio.create_task(self._browser_context._channel.send("pause", params)),
+                    asyncio.create_task(self._browser_context._channel.send("enableRecorder", {
+                        "mode": "recording",
+                        "language": "python",
+                        "testIdAttributeName": None,
+                        "handleSIGINT": False,
+                        "outputFile": output
+                    })),
+                    # asyncio.create_task(self._browser_context._channel.send("pause")),
                     self._closed_or_crashed_future,
                 ],
                 return_when=asyncio.FIRST_COMPLETED,
