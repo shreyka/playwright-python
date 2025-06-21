@@ -1,7 +1,7 @@
 rm -rf dist/ build/ *.egg-info/
 pip uninstall playwright
 
-python -m build --wheel
+python3 -m build --wheel
 pip install --force-reinstall dist/playwright-*.whl
 
 

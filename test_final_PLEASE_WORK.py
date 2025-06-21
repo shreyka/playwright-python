@@ -7,7 +7,10 @@ def run(playwright: Playwright) -> None:
     context = browser.new_context()
     page.get_by_role("link", name="Login").click()
     page.get_by_role("textbox", name="Enter your OneID").click()
-    page.get_by_role("textbox", name="Enter your Password").click()
+    page.get_by_role("textbox", name="Enter your OneID").fill("hello")
+    page.get_by_role("textbox", name="Enter your OneID").press("Tab")
+    page.get_by_role("textbox", name="Enter your Password").fill("testagain123!")
+    page.get_by_role("button", name="Sign On").click()
 
     # ---------------------
     context.close()

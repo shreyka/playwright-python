@@ -21,7 +21,7 @@ import sys
 import zipfile
 from typing import Dict
 
-release_version = "1.52.1"  ## shreya's github release version
+release_version = "1.52.2"  ## shreya's github release version
 driver_version = "1.52.0"
 
 base_wheel_bundles = [
@@ -99,7 +99,7 @@ def extractall(zip: zipfile.ZipFile, path: str) -> None:
 
 
 def download_driver(zip_name: str) -> None:
-    # local_driver_base = os.getenv("PLAYWRIGHT_LOCAL_DRIVER_PATH")
+    # local_driver_base = "/Users/shreyak/Documents/Simplex/playwright/utils/build/output"
     
     # # Map zip_name to the actual zip file name in the local build
     # # The local builds use version 1.54.0-next, but we can map them to our zip_names

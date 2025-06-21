@@ -5,6 +5,8 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
+    page.locator("[data-test=\"spotlight-search-input\"]").click()
+    page.locator("[data-test=\"spotlight-search-input\"]").fill("testing testing")
 
     # ---------------------
     context.close()
