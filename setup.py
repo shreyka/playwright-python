@@ -21,7 +21,7 @@ import sys
 import zipfile
 from typing import Dict
 
-release_version = "1.52.2"  ## shreya's github release version
+release_version = "1.52.3"  ## shreya's github release version
 driver_version = "1.52.0"
 
 base_wheel_bundles = [

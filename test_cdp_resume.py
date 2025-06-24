@@ -16,7 +16,7 @@ async def test_cdp_pause_resume():
         
         # === STEP 2: Connect via CDP to localhost:9222 ===
         print('\n🔌 === STEP 2: Connect via CDP to localhost:9222 ===')
-        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/3d512f94-be22-44c7-8e7c-6e22345aec15'
+        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/7471f0d2-563d-48b2-8b7d-c29ff9253535'
         
         try:
             cdp_browser = await p.chromium.connect_over_cdp(cdp_endpoint)
