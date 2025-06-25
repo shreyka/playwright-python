@@ -6,10 +6,11 @@ def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page.get_by_role("link", name="Login").click()
-    page.screenshot(path="screenshot-1750735388283.png")
-    page.screenshot(path="screenshot-1750735388283.png")
     page.get_by_role("textbox", name="Enter your OneID").click()
-    page.get_by_role("textbox", name="Enter your OneID").fill("jkdljfa")
+    username = "testing"
+    page.get_by_role("textbox", name="Enter your OneID").fill(username)
+    page.get_by_role("textbox", name="Enter your OneID").press("Tab")
+    page.get_by_role("textbox", name="Enter your Password").fill("password")
 
     # ---------------------
     context.close()

@@ -1129,7 +1129,8 @@ class Page(ChannelOwner):
                         "language": "python",
                         "testIdAttributeName": None,
                         "handleSIGINT": False,
-                        "outputFile": output
+                        "outputFile": output,
+                        "addVariable": True
                     })),
                     # asyncio.create_task(self._browser_context._channel.send("pause")),
                     self._closed_or_crashed_future,
