@@ -10205,7 +10205,8 @@ class Page(SyncContextManager):
 
     def pause(self,
               *,
-              output: typing.Optional[str] = None) -> None:
+              output: typing.Optional[str] = None,
+              variable: typing.Optional[bool] = False) -> None:
         """Page.pause
         
         Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume'
@@ -10220,7 +10221,7 @@ class Page(SyncContextManager):
         ----------
         """
 
-        return mapping.from_maybe_impl(self._sync(self._impl_obj.pause(output=output)))
+        return mapping.from_maybe_impl(self._sync(self._impl_obj.pause(output=output, variable=variable)))
 
     def resume(self) -> None:
 

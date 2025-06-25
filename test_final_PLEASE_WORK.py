@@ -6,11 +6,9 @@ def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page.get_by_role("link", name="Login").click()
-    page.get_by_role("textbox", name="Enter your OneID").click()
-    username = "testing"
-    page.get_by_role("textbox", name="Enter your OneID").fill(username)
+    Testing = "hello"
+    page.get_by_role("textbox", name="Enter your OneID").fill(Testing)
     page.get_by_role("textbox", name="Enter your OneID").press("Tab")
-    page.get_by_role("textbox", name="Enter your Password").fill("password")
 
     # ---------------------
     context.close()

@@ -10233,7 +10233,8 @@ class Page(AsyncContextManager):
 
     async def pause(self,
               *,
-              output: typing.Optional[str] = None) -> None:
+              output: typing.Optional[str] = None,
+              variable: typing.Optional[bool] = False) -> None:
         """Page.pause
         
         Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume'
@@ -10248,7 +10249,7 @@ class Page(AsyncContextManager):
         ----------
         """
 
-        return mapping.from_maybe_impl(await self._impl_obj.pause(output=output))
+        return mapping.from_maybe_impl(await self._impl_obj.pause(output=output, variable=variable))
 
     async def resume(self) -> None:
 

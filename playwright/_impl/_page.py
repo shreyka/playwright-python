@@ -1096,7 +1096,7 @@ class Page(ChannelOwner):
     def request(self) -> "APIRequestContext":
         return self.context.request
 
-    async def pause(self, *, output: Optional[str] = None) -> None:
+    async def pause(self, *, output: Optional[str] = None, variable: Optional[bool] = False) -> None:
         """Page.pause
 
         Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume'
@@ -1130,7 +1130,7 @@ class Page(ChannelOwner):
                         "testIdAttributeName": None,
                         "handleSIGINT": False,
                         "outputFile": output,
-                        "addVariable": True
+                        "addVariable": variable
                     })),
                     # asyncio.create_task(self._browser_context._channel.send("pause")),
                     self._closed_or_crashed_future,
