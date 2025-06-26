@@ -1121,7 +1121,7 @@ class Page(ChannelOwner):
         self._browser_context.set_default_navigation_timeout(0)
         self._browser_context.set_default_timeout(0)
         try:
-            print("CALLING NEW PAUSE 2")
+            print("CALLING NEW PAUSE WITH VARIABLES: ", variable)
             await asyncio.wait(
                 [
                     asyncio.create_task(self._browser_context._channel.send("enableRecorder", {
