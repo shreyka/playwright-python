@@ -16,7 +16,7 @@ async def test_cdp_pause_resume():
         
         # === STEP 2: Connect via CDP to localhost:9222 ===
         print('\n🔌 === STEP 2: Connect via CDP to localhost:9222 ===')
-        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/3760b6e3-720d-4e81-9a69-9104bfa4eb4c'
+        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/ecc3fc99-2771-407b-8f16-8be2d5031d9d'
         
         try:
             cdp_browser = await p.chromium.connect_over_cdp(cdp_endpoint)
@@ -28,6 +28,8 @@ async def test_cdp_pause_resume():
             cdp_page = cdp_context.pages[0]
             print("going to producthunt")
             await cdp_page.goto("https://suppliernet.walgreens.com/Login.jsp#")
+
+            await asyncio.sleep(100)
 
             
             # === STEP 3: Test first pause/resume via CDP connection ===
