@@ -16,7 +16,7 @@ async def test_cdp_pause_resume():
         
         # === STEP 2: Connect via CDP to localhost:9222 ===
         print('\n🔌 === STEP 2: Connect via CDP to localhost:9222 ===')
-        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/22a8f5ad-04ce-4867-96f3-3a3dfea9415c'
+        cdp_endpoint = 'ws://127.0.0.1:9222/devtools/browser/3760b6e3-720d-4e81-9a69-9104bfa4eb4c'
         
         try:
             cdp_browser = await p.chromium.connect_over_cdp(cdp_endpoint)
@@ -40,7 +40,7 @@ async def test_cdp_pause_resume():
             pause_task = asyncio.create_task(cdp_page.pause(output="test_final_PLEASE_WORK.py", variable=False))
             
             # Wait a bit, then try to resume
-            await asyncio.sleep(100)
+            await asyncio.sleep(5)
             print('⏭️  Calling first page.resume() via CDP connection...')
             
             try:
